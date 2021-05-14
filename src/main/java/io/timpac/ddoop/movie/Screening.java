@@ -7,6 +7,19 @@ public class Screening {
 	private int seq;
 	private LocalDateTime whenScreened;
 	
+	public Screening() {}
+	public Screening(Movie movie, int seq, LocalDateTime whenScreened) {
+		this.movie = movie;
+		this.seq = seq;
+		this.whenScreened = whenScreened;
+	}
+
+	public Reservation reserve(Customer customer, int audienceCount) {
+		Reservation reservation = new Reservation(this, customer, audienceCount, movie.calculateDiscountFee(this));
+		
+		return reservation;
+	}
+	
 	public Movie getMovie() {
 		return movie;
 	}
