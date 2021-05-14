@@ -26,6 +26,47 @@ public class Movie {
 		this.discountPercent = discountPercent;
 	}
 	
+	/**
+	 * 할인조건이 하나라도 맞으면 return true, 아니면 false
+	 * */
+	private boolean discountable(Screening screening) {
+		for(DiscountCondition condition : discountCondition) {
+			if(condition.isSatisfied(screening.getSeq(), screening.getWhenScreened().getDayOfWeek(), screening.getWhenScreened().toLocalTime())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public Money calculateDiscountFee(Screening screening) {
+		if(!discountable(screening)) {
+			return fee;
+		}
+		
+		switch(movieType) {
+			case AMOUNT_DISCOUNT:
+				return calculateAmountDiscountFee(screening); 
+			case PERCENT_DISCOUNT:
+				return calculatePercentDiscountFee(screening);
+			case NONE_DISCOUNT:
+				return calculateNoneDiscountFee(screening);
+		}
+		return fee;
+	}
+	
+	private Money calculateAmountDiscountFee(Screening screening) {
+		return fee.subtract(discountAmount);
+	}
+	
+	private Money calculatePercentDiscountFee(Screening screening) {
+		return fee.subtract(fee.Multiply(discountPercent));
+	}
+	
+	private Money calculateNoneDiscountFee(Screening screening) {
+		return fee;
+	}
+	
 	public String getTitle() {
 		return title;
 	}

@@ -18,6 +18,21 @@ public class DiscountCondition {
 		this.endTime = endTime;
 	}
 	
+	public boolean isSatisfied(int screeningSeq, DayOfWeek screeningDayOfWeek, LocalTime screeningTime) {
+		if(type == DiscountConditionType.SEQUENCE) {
+			if(seq == screeningSeq) {
+				return true;
+			}
+		}else if(type == DiscountConditionType.PERIOD) {
+			if(dayOfWeek.equals(screeningDayOfWeek) && startTime.compareTo(screeningTime) <= 0 && endTime.compareTo(screeningTime) >= 0) {
+				return true;
+			}
+		}else {
+			throw new IllegalArgumentException("DiscountConditionType is invalid");
+		}
+		return false;
+	}
+	
 	public DiscountConditionType getType() {
 		return type;
 	}

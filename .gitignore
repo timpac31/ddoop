@@ -16,3 +16,4 @@ tmp/
 .settings/
 .classpath
 .project
+.factorypath
