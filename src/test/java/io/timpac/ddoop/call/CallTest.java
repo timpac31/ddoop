@@ -12,16 +12,16 @@ import io.timpac.ddoop.movie.Money;
 public class CallTest {
 	@Test
 	public void calculateFee() {
-		Phone phone = new Phone(Money.wons(5), Duration.ofSeconds(10));
+		RegularPhone phone = new RegularPhone(Money.wons(5), Duration.ofSeconds(10), 0.1);
 		phone.call(new Call(LocalDateTime.of(2021, 1, 1, 12, 10, 0), LocalDateTime.of(2021, 1, 1, 12, 11, 0)));
 		phone.call(new Call(LocalDateTime.of(2021, 1, 2, 22, 10, 0), LocalDateTime.of(2021, 1, 2, 22, 11, 0)));
 		
-		assertEquals(Money.wons(60), phone.calculateFee());
+		assertEquals(Money.wons(66), phone.calculateFee());
 	}
 	
 	@Test
 	public void calculateNightFee() {
-		NightlyDiscountPhone phone = new NightlyDiscountPhone(Money.wons(2), Money.wons(5), Duration.ofSeconds(10));
+		NightlyDiscountPhone phone = new NightlyDiscountPhone(Money.wons(2), Money.wons(5), Duration.ofSeconds(10), 0);
 		phone.call(new Call(LocalDateTime.of(2021, 1, 1, 12, 10, 0), LocalDateTime.of(2021, 1, 1, 12, 11, 0)));
 		phone.call(new Call(LocalDateTime.of(2021, 1, 2, 22, 10, 0), LocalDateTime.of(2021, 1, 2, 22, 11, 0)));
 		

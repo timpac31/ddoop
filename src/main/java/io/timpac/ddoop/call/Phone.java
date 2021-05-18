@@ -1,31 +1,30 @@
 package io.timpac.ddoop.call;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.timpac.ddoop.movie.Money;
 
-public class Phone {
-	private Money amount;
-	private Duration seconds;
+public abstract class Phone {
 	private List<Call> calls = new ArrayList<>();
+	private double taxRate;
 	
-	public Phone(Money amount, Duration seconds) {
-		this.amount = amount;
-		this.seconds = seconds;
-	}
-	
-	public void call(Call call) {
-		calls.add(call);
+	public Phone(double taxRate) {
+		this.taxRate = taxRate;
 	}
 	
 	public Money calculateFee() {
 		Money result = Money.ZERO;
 		for(Call call : calls) {
-			result = result.add(amount.Multiply(call.getDuration().getSeconds() / seconds.getSeconds()));
+			result = result.add(calculateFee(call));
 		}
 		
-		return result;
+		return result.add(result.Multiply(taxRate));
 	}
+	
+	public void call(Call call) {
+		this.calls.add(call);
+	}
+	
+	protected abstract Money calculateFee(Call call);
 }
