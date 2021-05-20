@@ -1,30 +1,34 @@
 package io.timpac.ddoop.call;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.timpac.ddoop.movie.Money;
 
-public abstract class Phone {
+public class Phone {
 	private List<Call> calls = new ArrayList<>();
-	private double taxRate;
+	private RatePolicy ratePolicy;
 	
-	public Phone(double taxRate) {
-		this.taxRate = taxRate;
+	public Phone() {}
+	
+	public Phone(RatePolicy ratePolicy) {
+		this.ratePolicy = ratePolicy;
 	}
 	
 	public Money calculateFee() {
-		Money result = Money.ZERO;
-		for(Call call : calls) {
-			result = result.add(calculateFee(call));
-		}
-		
-		return result.add(result.Multiply(taxRate));
+		return ratePolicy.calculateFee(this);
 	}
 	
 	public void call(Call call) {
 		this.calls.add(call);
 	}
 	
-	protected abstract Money calculateFee(Call call);
+	public List<Call> getCalls() {
+		return Collections.unmodifiableList(calls);
+	}
+	
+	public void changePolicy(RatePolicy ratePolicy) {
+		this.ratePolicy = ratePolicy;
+	}
 }
