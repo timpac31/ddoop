@@ -38,6 +38,8 @@ public class Screening {
 	public void setWhenScreened(LocalDateTime whenScreened) {
 		this.whenScreened = whenScreened;
 	}
-	
+	public Money getMovieFee() {
+		return movie.getFee();
+	}
 	
 }
